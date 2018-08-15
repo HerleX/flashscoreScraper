@@ -17,7 +17,7 @@ public class MatchInfo {
 		startTime = "0";
 	}
 	
-	public String formatted() {
+	public String getFormatted() {
 		return liveTime + " min | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
 	}
 }
