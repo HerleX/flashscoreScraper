@@ -8,6 +8,7 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 
 import flashscoreScraper.MatchInfo;
 
@@ -15,7 +16,11 @@ public class DEL {
 	private WebDriver driver;
 	
 	public DEL() {
-		driver = new FirefoxDriver();
+		System.setProperty("webdriver.gecko.driver", "C:\\downloads\\geckodriver-v0.21.0-win64\\geckodriver.exe");
+		
+		FirefoxOptions options = new FirefoxOptions();
+		options.setHeadless(true);
+		driver = new FirefoxDriver(options);
 	}
 	
 	public void finalize() {
