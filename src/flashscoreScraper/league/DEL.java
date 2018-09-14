@@ -34,22 +34,38 @@ public class DEL {
 		try {
 			driver.get("https://www.flashscore.de/eishockey/deutschland/del/");
 		
-			WebElement table = driver.findElement(By.id("fs-summary-fixtures")).findElement(By.className("hockey")).findElement(By.tagName("tbody"));
+			WebElement table = driver.findElement(By.id("fs")).findElement(By.className("hockey")).findElement(By.tagName("tbody"));
 			List<WebElement> matches = table.findElements(By.tagName("tr"));
 			
+			MatchInfo match = null;
+			int inc = 0;
 			for(WebElement row : matches) {
-				if(row.getAttribute("class") != "event_round") {
-					MatchInfo match = new MatchInfo();
+				if(inc % 2 == 0) {
+					match = new MatchInfo();
 					try {
 						match.startTime = row.findElement(By.cssSelector(".cell_ad.time")).getText();
+						
+						// Quick and dirty - remove newlines
+						match.startTime = match.startTime.replace("\n", "").replace("\r", "");
+						
+						match.liveTime = row.findElement(By.cssSelector(".cell_aa.timer")).getText();
 						match.teamHome = row.findElement(By.cssSelector(".cell_ab.team-home")).getText();
+						match.scoreHome = row.findElement(By.cssSelector(".cell_sc.score-home")).getText();
+					} catch(NoSuchElementException e) {
+						continue;
+					}
+				} else {
+					try {
 						match.teamAway = row.findElement(By.cssSelector(".cell_ac.team-away")).getText();
+						match.scoreAway = row.findElement(By.cssSelector(".cell_ta.score-away")).getText();
 					} catch(NoSuchElementException e) {
 						continue;
 					}
 					
 					result.add(match);
 				}
+				
+				++inc;
 			}
 		} catch(Exception e) {
 			return new ArrayList<MatchInfo>();
