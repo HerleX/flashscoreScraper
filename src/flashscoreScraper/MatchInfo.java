@@ -18,6 +18,12 @@ public class MatchInfo {
 	}
 	
 	public String getFormatted() {
-		return liveTime + " min | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
+		if(liveTime.isEmpty()) {
+			return "Vor dem Spiel | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
+		}
+		else
+		{
+			return liveTime + " min | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
+		}
 	}
 }

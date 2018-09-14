@@ -48,7 +48,7 @@ public class DEL {
 						// Quick and dirty - remove newlines
 						match.startTime = match.startTime.replace("\n", "").replace("\r", "");
 						
-						match.liveTime = row.findElement(By.cssSelector(".cell_aa.timer")).getText();
+						match.liveTime = row.findElement(By.cssSelector(".cell_aa.timer")).getText();					
 						match.teamHome = row.findElement(By.cssSelector(".cell_ab.team-home")).getText();
 						match.scoreHome = row.findElement(By.cssSelector(".cell_sc.score-home")).getText();
 					} catch(NoSuchElementException e) {
