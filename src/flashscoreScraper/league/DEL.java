@@ -27,7 +27,7 @@ public class DEL {
 		driver.quit();
 	}
 	
-	public List<MatchInfo> getUpcomingMatches() {		
+	public List<MatchInfo> getUpcomingMatches() {
 		// Fetch match information
 		List<MatchInfo> result = new ArrayList<MatchInfo>();
 		
