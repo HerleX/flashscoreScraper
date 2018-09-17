@@ -1,5 +1,7 @@
 package flashscoreScraper;
 
+import flashscoreScraper.helperFunctions;
+
 public class MatchInfo {
 	public String teamHome;
 	public String teamAway;
@@ -18,6 +20,12 @@ public class MatchInfo {
 	}
 	
 	public String getFormatted() {
-		return liveTime + " min | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
+		if(helperFunctions.isStringNullOrWhiteSpace(liveTime)) {
+			return "Vor dem Spiel | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
+		}
+		else
+		{
+			return liveTime + " | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
+		}
 	}
 }

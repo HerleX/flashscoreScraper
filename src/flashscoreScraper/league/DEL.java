@@ -15,8 +15,8 @@ import flashscoreScraper.MatchInfo;
 public class DEL {
 	private WebDriver driver;
 	
-	public DEL() {
-		System.setProperty("webdriver.gecko.driver", "C:\\downloads\\geckodriver-v0.21.0-win64\\geckodriver.exe");
+	public DEL(String geckoDriverPath) {
+		System.setProperty("webdriver.gecko.driver", geckoDriverPath);
 		
 		FirefoxOptions options = new FirefoxOptions();
 		options.setHeadless(true);
@@ -44,11 +44,17 @@ public class DEL {
 					match = new MatchInfo();
 					try {
 						match.startTime = row.findElement(By.cssSelector(".cell_ad.time")).getText();
+						match.liveTime = row.findElement(By.cssSelector(".cell_aa.timer")).getText();
 						
 						// Quick and dirty - remove newlines
 						match.startTime = match.startTime.replace("\n", "").replace("\r", "");
+						match.liveTime = match.liveTime.replace("\n",  "").replace("\r", "");
 						
-						match.liveTime = row.findElement(By.cssSelector(".cell_aa.timer")).getText();
+						String[] liveTime = match.liveTime.split("(?<=Drittel) ");
+						if(liveTime.length != 0) {
+							match.liveTime = liveTime[0];
+						}
+						
 						match.teamHome = row.findElement(By.cssSelector(".cell_ab.team-home")).getText();
 						match.scoreHome = row.findElement(By.cssSelector(".cell_sc.score-home")).getText();
 					} catch(NoSuchElementException e) {
