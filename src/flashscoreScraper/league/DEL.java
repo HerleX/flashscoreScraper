@@ -10,6 +10,8 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
+import flashscoreScraper.LeagueTable;
+import flashscoreScraper.LeagueTableEntry;
 import flashscoreScraper.MatchInfo;
 
 public class DEL {
@@ -75,6 +77,44 @@ public class DEL {
 			}
 		} catch(Exception e) {
 			return new ArrayList<MatchInfo>();
+		}
+		
+		return result;
+	}
+	
+	public LeagueTable getTable() {
+		// Fetch league table information
+		LeagueTable result = new LeagueTable();
+		
+		try {
+			driver.get("https://www.flashscore.de/eishockey/deutschland/del/");
+		
+			WebElement table = driver.findElement(By.className("glib-stats-box-table-overall")).findElement(By.id("table-type-1")).findElement(By.tagName("tbody"));
+			List<WebElement> clubs = table.findElements(By.tagName("tr"));
+			
+			LeagueTableEntry club = null;
+			for(WebElement row : clubs) {
+				club = new LeagueTableEntry();
+				try {
+					club.teamName = row.findElement(By.cssSelector(".team_name_span")).getText();
+					club.defeats = row.findElement(By.cssSelector(".losses_regular")).getText();
+					club.gamesPlayed = row.findElement(By.cssSelector(".matches_played")).getText();
+					club.otDefeats = row.findElement(By.cssSelector(".losses_ot")).getText();
+					club.otWins = row.findElement(By.cssSelector(".wins_ot")).getText();
+					club.wins = row.findElement(By.cssSelector(".wins_regular")).getText();
+					
+					// Special
+					List<WebElement> goalFields = row.findElements(By.cssSelector(".goals"));
+					if(!goalFields.isEmpty()) {
+						club.points = goalFields.get(goalFields.size() - 1).getText();
+					}
+				} catch(NoSuchElementException e) {
+					continue;
+				}
+				result.addEntry(club);
+			}
+		} catch(Exception e) {
+			return new LeagueTable();
 		}
 		
 		return result;
