@@ -27,6 +27,25 @@ public class MatchInfo {
         }
     }
     
+    public void cleanUp() {
+    	startTime = startTime.replace("\n", "").replace("\r", "");
+        liveTime = liveTime.replace("\n",  "").replace("\r", "");
+        teamHome = teamHome.replace("\n",  "").replace("\r", "");
+        teamAway = teamAway.replace("\n",  "").replace("\r", "");
+        scoreHome = scoreHome.replace("\n",  "").replace("\r", "").replace("TOR", "");
+        scoreAway = scoreAway.replace("\n",  "").replace("\r", "").replace("TOR", "");
+        
+        if(liveTime.contains("Verlängerung")) {
+        	liveTime = "Verlaengerung";
+        }
+        else {
+            String[] liveTimeSplitted = liveTime.split("(?<=Drittel) ");
+            if(liveTimeSplitted.length != 0) {
+                liveTime = liveTimeSplitted[0];
+            }
+        }
+    }
+
     public String getFormatted() {
         return getLiveTime() + " | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
     }

@@ -69,16 +69,6 @@ public class DEL {
                     try {
                         match.startTime = row.findElement(By.cssSelector(".cell_ad.time")).getText();
                         match.liveTime = row.findElement(By.cssSelector(".cell_aa.timer")).getText();
-                        
-                        // Quick and dirty - remove newlines
-                        match.startTime = match.startTime.replace("\n", "").replace("\r", "");
-                        match.liveTime = match.liveTime.replace("\n",  "").replace("\r", "");
-                        
-                        String[] liveTime = match.liveTime.split("(?<=Drittel) ");
-                        if(liveTime.length != 0) {
-                            match.liveTime = liveTime[0];
-                        }
-                        
                         match.teamHome = row.findElement(By.cssSelector(".cell_ab.team-home")).getText();
                         match.scoreHome = row.findElement(By.cssSelector(".cell_sc.score-home")).getText();
                     } catch(NoSuchElementException e) {
@@ -92,6 +82,7 @@ public class DEL {
                         continue;
                     }
                     
+                    match.cleanUp();
                     result.add(match);
                 }
                 
