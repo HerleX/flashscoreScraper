@@ -13,9 +13,9 @@ public class MatchInfo {
     public MatchInfo() {
         teamHome = "#teamHome#";
         teamAway = "#teamAway#";
-        scoreHome = "null";
-        scoreAway = "null";
-        liveTime = "0";
+        scoreHome = "0";
+        scoreAway = "0";
+        liveTime = "";
         startTime = "0";
     }
     
