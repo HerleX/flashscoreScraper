@@ -16,16 +16,16 @@ public class DEL {
 	private List<String> matchUrls;
 	private List<Document> matchPages;
 	
-	public DEL() {
+	public DEL(String url, String league) {
 		matchUrls = new ArrayList<String>();
 		matchPages = new ArrayList<Document>();
 		
 		try {
 		      // fetch the document over HTTP
-		      webPage = Jsoup.connect("http://m.flashscore.de/eishockey/?d=1").get();
+		      webPage = Jsoup.connect(url).get();
 		      Elements matches = webPage.select("h4 ~ a");
 		      for(Element match : matches) {
-		    	  if(findParentLeague(match).equalsIgnoreCase("DEUTSCHLAND: DEL")) {
+		    	  if(findParentLeague(match).equalsIgnoreCase(league)) {
 		    		  String matchUrl = match.attr("abs:href");
 		    		  matchUrls.add(matchUrl);
 		    	  }
@@ -72,15 +72,23 @@ public class DEL {
         	match.teamHome = participants.split("-")[0];
         	match.teamAway = participants.split("-")[1];
         	
-        	match.startTime = matchPage.select("div.detail").text();
-        	
         	Elements liveData = matchPage.select("div.detail > span.live");
         	if(liveData.size() == 2) {
+        		match.isLive = true;
         		String score = liveData.first().text();
         		match.scoreHome = score.split(":")[0];
         		match.scoreAway = score.split(":")[1];
         		
         		match.liveTime = liveData.last().text();
+        	} else {
+        		match.isLive = false;
+        		liveData = matchPage.select("div.detail");
+        		match.liveTime = liveData.size() > 1 ? liveData.get(1).text() : "";
+        		match.startTime = liveData.size() > 2 ? liveData.get(2).text() : "";
+        		
+        		String score = matchPage.select("div.detail > b").text();
+        		match.scoreHome = score.split(":")[0];
+        		match.scoreAway = score.split(":")[1];
         	}
         	
         	match.cleanUp();

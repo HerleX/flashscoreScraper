@@ -10,6 +10,8 @@ public class MatchInfo {
     public String liveTime;
     public String startTime;
     
+    public boolean isLive = false;
+    
     public MatchInfo() {
         teamHome = "#teamHome#";
         teamAway = "#teamAway#";
@@ -35,8 +37,12 @@ public class MatchInfo {
         scoreHome = scoreHome.replace("\n",  "").replace("\r", "").replace("TOR", "");
         scoreAway = scoreAway.replace("\n",  "").replace("\r", "").replace("TOR", "");
         
-        if(liveTime.contains("Verlängerung")) {
+        if(liveTime.equalsIgnoreCase("Verlängerung")) {
         	liveTime = "Verlaengerung";
+        } else if(liveTime.equalsIgnoreCase("Nach Verlängerung")) {
+        	liveTime = "n.V.";
+        } else if(liveTime.equalsIgnoreCase("Nach Penaltyschiessen")) {
+        	liveTime = "n.P.";
         }
         else {
             String[] liveTimeSplitted = liveTime.split("(?<=Drittel) ");
@@ -47,6 +53,10 @@ public class MatchInfo {
     }
 
     public String getFormatted() {
-        return getLiveTime() + " | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
+    	if(isLive) {
+    		return "LIVE | " + getLiveTime() + " | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
+    	} else {
+    		return getLiveTime() + " | " + startTime + " Uhr | " + teamHome + " " + scoreHome + " - " + scoreAway + " " + teamAway;
+    	}
     }
 }
